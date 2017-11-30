@@ -7,23 +7,62 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CA4D59741FC27F2C00DCB146 /* MyARView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4D59731FC27F2C00DCB146 /* MyARView.swift */; };
+		CA4D59771FC2813000DCB146 /* VirtualObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4D59751FC2813000DCB146 /* VirtualObject.swift */; };
+		CA4D59781FC2813000DCB146 /* VirtualObjectLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4D59761FC2813000DCB146 /* VirtualObjectLoader.swift */; };
+		CAF7E5D21FC1BA11004D9AC8 /* FocusSquare.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF7E5D01FC1BA11004D9AC8 /* FocusSquare.swift */; };
+		CAF7E5D31FC1BA11004D9AC8 /* FocusSquareSegment.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF7E5D11FC1BA11004D9AC8 /* FocusSquareSegment.swift */; };
+		CAF7E5D91FC1BB14004D9AC8 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF7E5D81FC1BB14004D9AC8 /* Utilities.swift */; };
+		CAFA7D4B1FC4754C00D2F5D7 /* CreatObjectInteraction.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAFA7D4A1FC4754B00D2F5D7 /* CreatObjectInteraction.swift */; };
+		CAFA7D4D1FC4761D00D2F5D7 /* ThresholdPanGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAFA7D4C1FC4761D00D2F5D7 /* ThresholdPanGesture.swift */; };
+		CAFA7D4F1FC5130100D2F5D7 /* CreatObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAFA7D4E1FC5130100D2F5D7 /* CreatObject.swift */; };
+		E13362441FC560BD0064BA27 /* TextNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = E13362421FC560BC0064BA27 /* TextNode.swift */; };
+		E13362451FC560BD0064BA27 /* ARText.swift in Sources */ = {isa = PBXBuildFile; fileRef = E13362431FC560BC0064BA27 /* ARText.swift */; };
+		E138151B1FBA9DCA00753018 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E138151A1FBA9DCA00753018 /* Assets.xcassets */; };
 		E155989B1FB48F9400C12A17 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E155989A1FB48F9400C12A17 /* AppDelegate.swift */; };
 		E155989D1FB48F9400C12A17 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = E155989C1FB48F9400C12A17 /* art.scnassets */; };
 		E155989F1FB48F9400C12A17 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E155989E1FB48F9400C12A17 /* ViewController.swift */; };
 		E15598A21FB48F9400C12A17 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E15598A01FB48F9400C12A17 /* Main.storyboard */; };
-		E15598A41FB48F9400C12A17 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E15598A31FB48F9400C12A17 /* Assets.xcassets */; };
 		E15598A71FB48F9400C12A17 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E15598A51FB48F9400C12A17 /* LaunchScreen.storyboard */; };
+		E1628CE51FC990BB0077BC60 /* 李旭科钢笔行书.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E1628CE21FC990B20077BC60 /* 李旭科钢笔行书.ttf */; };
+		E1628CE61FC990BB0077BC60 /* 求福楷体.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E1628CE41FC990B20077BC60 /* 求福楷体.ttf */; };
+		E1628CE71FC990BB0077BC60 /* 中易隶书.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E1628CE31FC990B20077BC60 /* 中易隶书.ttf */; };
+		E1628CE91FC9C8850077BC60 /* StatusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1628CE81FC9C8850077BC60 /* StatusViewController.swift */; };
+		E1F2E4751FC7F94000A75A48 /* Media.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = E1F2E4741FC7F94000A75A48 /* Media.scnassets */; };
+		E1F2E4771FC9408E00A75A48 /* FontStyleVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1F2E4761FC9408E00A75A48 /* FontStyleVC.swift */; };
+		E3C1FFFDB576CE3519C2D573 /* Pods_3DARKit___.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEDD18BAF56461BD788D51E2 /* Pods_3DARKit___.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3BB440952B47F73D02FEFBC0 /* Pods-3DARKit初体验.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-3DARKit初体验.debug.xcconfig"; path = "Pods/Target Support Files/Pods-3DARKit初体验/Pods-3DARKit初体验.debug.xcconfig"; sourceTree = "<group>"; };
+		78644F0E355CFA10ACC89935 /* Pods-3DARKit初体验.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-3DARKit初体验.release.xcconfig"; path = "Pods/Target Support Files/Pods-3DARKit初体验/Pods-3DARKit初体验.release.xcconfig"; sourceTree = "<group>"; };
+		AEDD18BAF56461BD788D51E2 /* Pods_3DARKit___.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = "Pods_3DARKit___.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CA4D59731FC27F2C00DCB146 /* MyARView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyARView.swift; sourceTree = "<group>"; };
+		CA4D59751FC2813000DCB146 /* VirtualObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VirtualObject.swift; sourceTree = "<group>"; };
+		CA4D59761FC2813000DCB146 /* VirtualObjectLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VirtualObjectLoader.swift; sourceTree = "<group>"; };
+		CAF7E5D01FC1BA11004D9AC8 /* FocusSquare.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSquare.swift; sourceTree = "<group>"; };
+		CAF7E5D11FC1BA11004D9AC8 /* FocusSquareSegment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSquareSegment.swift; sourceTree = "<group>"; };
+		CAF7E5D81FC1BB14004D9AC8 /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
+		CAFA7D4A1FC4754B00D2F5D7 /* CreatObjectInteraction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreatObjectInteraction.swift; sourceTree = "<group>"; };
+		CAFA7D4C1FC4761D00D2F5D7 /* ThresholdPanGesture.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThresholdPanGesture.swift; sourceTree = "<group>"; };
+		CAFA7D4E1FC5130100D2F5D7 /* CreatObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatObject.swift; sourceTree = "<group>"; };
+		E13362421FC560BC0064BA27 /* TextNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextNode.swift; sourceTree = "<group>"; };
+		E13362431FC560BC0064BA27 /* ARText.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ARText.swift; sourceTree = "<group>"; };
+		E138151A1FBA9DCA00753018 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E15598971FB48F9400C12A17 /* 3DARKit初体验.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "3DARKit初体验.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E155989A1FB48F9400C12A17 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E155989C1FB48F9400C12A17 /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
 		E155989E1FB48F9400C12A17 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		E15598A11FB48F9400C12A17 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		E15598A31FB48F9400C12A17 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E15598A61FB48F9400C12A17 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E15598A81FB48F9400C12A17 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E1628CE21FC990B20077BC60 /* 李旭科钢笔行书.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "李旭科钢笔行书.ttf"; path = "../../李旭科钢笔行书.ttf"; sourceTree = "<group>"; };
+		E1628CE31FC990B20077BC60 /* 中易隶书.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "中易隶书.ttf"; path = "../../中易隶书.ttf"; sourceTree = "<group>"; };
+		E1628CE41FC990B20077BC60 /* 求福楷体.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "求福楷体.ttf"; path = "../../求福楷体.ttf"; sourceTree = "<group>"; };
+		E1628CE81FC9C8850077BC60 /* StatusViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusViewController.swift; sourceTree = "<group>"; };
+		E1C33D331FC69ACA0063DCC8 /* 3DARKit初体验-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "3DARKit初体验-Bridging-Header.h"; sourceTree = "<group>"; };
+		E1F2E4741FC7F94000A75A48 /* Media.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Media.scnassets; sourceTree = "<group>"; };
+		E1F2E4761FC9408E00A75A48 /* FontStyleVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontStyleVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,17 +70,41 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E3C1FFFDB576CE3519C2D573 /* Pods_3DARKit___.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		ABE7B415623EA4A73DD82306 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				3BB440952B47F73D02FEFBC0 /* Pods-3DARKit初体验.debug.xcconfig */,
+				78644F0E355CFA10ACC89935 /* Pods-3DARKit初体验.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		CAF7E5D51FC1BA2D004D9AC8 /* FocusSquare */ = {
+			isa = PBXGroup;
+			children = (
+				CAF7E5D01FC1BA11004D9AC8 /* FocusSquare.swift */,
+				CAF7E5D11FC1BA11004D9AC8 /* FocusSquareSegment.swift */,
+			);
+			name = FocusSquare;
+			sourceTree = "<group>";
+		};
 		E155988E1FB48F9400C12A17 = {
 			isa = PBXGroup;
 			children = (
+				E1628CE21FC990B20077BC60 /* 李旭科钢笔行书.ttf */,
+				E1628CE41FC990B20077BC60 /* 求福楷体.ttf */,
+				E1628CE31FC990B20077BC60 /* 中易隶书.ttf */,
 				E15598991FB48F9400C12A17 /* 3DARKit初体验 */,
 				E15598981FB48F9400C12A17 /* Products */,
+				ABE7B415623EA4A73DD82306 /* Pods */,
+				F65F20254EC4E6C0BB6916A5 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -56,15 +119,37 @@
 		E15598991FB48F9400C12A17 /* 3DARKit初体验 */ = {
 			isa = PBXGroup;
 			children = (
-				E155989A1FB48F9400C12A17 /* AppDelegate.swift */,
-				E155989C1FB48F9400C12A17 /* art.scnassets */,
-				E155989E1FB48F9400C12A17 /* ViewController.swift */,
-				E15598A01FB48F9400C12A17 /* Main.storyboard */,
-				E15598A31FB48F9400C12A17 /* Assets.xcassets */,
-				E15598A51FB48F9400C12A17 /* LaunchScreen.storyboard */,
 				E15598A81FB48F9400C12A17 /* Info.plist */,
+				E155989A1FB48F9400C12A17 /* AppDelegate.swift */,
+				E155989E1FB48F9400C12A17 /* ViewController.swift */,
+				CAF7E5D81FC1BB14004D9AC8 /* Utilities.swift */,
+				CA4D59731FC27F2C00DCB146 /* MyARView.swift */,
+				E13362431FC560BC0064BA27 /* ARText.swift */,
+				E13362421FC560BC0064BA27 /* TextNode.swift */,
+				CA4D59751FC2813000DCB146 /* VirtualObject.swift */,
+				CA4D59761FC2813000DCB146 /* VirtualObjectLoader.swift */,
+				CAFA7D4A1FC4754B00D2F5D7 /* CreatObjectInteraction.swift */,
+				CAFA7D4C1FC4761D00D2F5D7 /* ThresholdPanGesture.swift */,
+				CAFA7D4E1FC5130100D2F5D7 /* CreatObject.swift */,
+				E15598A01FB48F9400C12A17 /* Main.storyboard */,
+				E15598A51FB48F9400C12A17 /* LaunchScreen.storyboard */,
+				E155989C1FB48F9400C12A17 /* art.scnassets */,
+				E138151A1FBA9DCA00753018 /* Assets.xcassets */,
+				E1F2E4741FC7F94000A75A48 /* Media.scnassets */,
+				CAF7E5D51FC1BA2D004D9AC8 /* FocusSquare */,
+				E1C33D331FC69ACA0063DCC8 /* 3DARKit初体验-Bridging-Header.h */,
+				E1F2E4761FC9408E00A75A48 /* FontStyleVC.swift */,
+				E1628CE81FC9C8850077BC60 /* StatusViewController.swift */,
 			);
 			path = "3DARKit初体验";
+			sourceTree = "<group>";
+		};
+		F65F20254EC4E6C0BB6916A5 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				AEDD18BAF56461BD788D51E2 /* Pods_3DARKit___.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -74,9 +159,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E15598AB1FB48F9400C12A17 /* Build configuration list for PBXNativeTarget "3DARKit初体验" */;
 			buildPhases = (
+				927911298F9AABD1C515DEA4 /* [CP] Check Pods Manifest.lock */,
 				E15598931FB48F9400C12A17 /* Sources */,
 				E15598941FB48F9400C12A17 /* Frameworks */,
 				E15598951FB48F9400C12A17 /* Resources */,
+				B4FB8638BA8F81ADE49C72C7 /* [CP] Embed Pods Frameworks */,
+				B722B943240AE1E6145E4899 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -99,6 +187,7 @@
 				TargetAttributes = {
 					E15598961FB48F9400C12A17 = {
 						CreatedOnToolsVersion = 9.1;
+						LastSwiftMigration = 0910;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -126,22 +215,95 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E1628CE51FC990BB0077BC60 /* 李旭科钢笔行书.ttf in Resources */,
+				E1628CE61FC990BB0077BC60 /* 求福楷体.ttf in Resources */,
+				E1628CE71FC990BB0077BC60 /* 中易隶书.ttf in Resources */,
 				E155989D1FB48F9400C12A17 /* art.scnassets in Resources */,
 				E15598A71FB48F9400C12A17 /* LaunchScreen.storyboard in Resources */,
-				E15598A41FB48F9400C12A17 /* Assets.xcassets in Resources */,
+				E138151B1FBA9DCA00753018 /* Assets.xcassets in Resources */,
 				E15598A21FB48F9400C12A17 /* Main.storyboard in Resources */,
+				E1F2E4751FC7F94000A75A48 /* Media.scnassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		927911298F9AABD1C515DEA4 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-3DARKit初体验-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B4FB8638BA8F81ADE49C72C7 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-3DARKit初体验/Pods-3DARKit初体验-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/ARCL/ARCL.framework",
+				"${BUILT_PRODUCTS_DIR}/EFColorPicker/EFColorPicker.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ARCL.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/EFColorPicker.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-3DARKit初体验/Pods-3DARKit初体验-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B722B943240AE1E6145E4899 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-3DARKit初体验/Pods-3DARKit初体验-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		E15598931FB48F9400C12A17 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E13362441FC560BD0064BA27 /* TextNode.swift in Sources */,
+				CAFA7D4D1FC4761D00D2F5D7 /* ThresholdPanGesture.swift in Sources */,
 				E155989F1FB48F9400C12A17 /* ViewController.swift in Sources */,
+				CAFA7D4B1FC4754C00D2F5D7 /* CreatObjectInteraction.swift in Sources */,
+				E1628CE91FC9C8850077BC60 /* StatusViewController.swift in Sources */,
+				CA4D59741FC27F2C00DCB146 /* MyARView.swift in Sources */,
+				CAF7E5D31FC1BA11004D9AC8 /* FocusSquareSegment.swift in Sources */,
+				CA4D59781FC2813000DCB146 /* VirtualObjectLoader.swift in Sources */,
+				CA4D59771FC2813000DCB146 /* VirtualObject.swift in Sources */,
+				CAFA7D4F1FC5130100D2F5D7 /* CreatObject.swift in Sources */,
+				CAF7E5D21FC1BA11004D9AC8 /* FocusSquare.swift in Sources */,
+				CAF7E5D91FC1BB14004D9AC8 /* Utilities.swift in Sources */,
 				E155989B1FB48F9400C12A17 /* AppDelegate.swift in Sources */,
+				E13362451FC560BD0064BA27 /* ARText.swift in Sources */,
+				E1F2E4771FC9408E00A75A48 /* FontStyleVC.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -276,14 +438,19 @@
 		};
 		E15598AC1FB48F9400C12A17 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3BB440952B47F73D02FEFBC0 /* Pods-3DARKit初体验.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = BPP589VP97;
 				INFOPLIST_FILE = "3DARKit初体验/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "xuweinan.-DARKit---";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "3DARKit初体验/3DARKit初体验-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -291,14 +458,18 @@
 		};
 		E15598AD1FB48F9400C12A17 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 78644F0E355CFA10ACC89935 /* Pods-3DARKit初体验.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = BPP589VP97;
 				INFOPLIST_FILE = "3DARKit初体验/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "xuweinan.-DARKit---";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "3DARKit初体验/3DARKit初体验-Bridging-Header.h";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

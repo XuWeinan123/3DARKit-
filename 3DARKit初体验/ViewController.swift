@@ -9,72 +9,398 @@
 import UIKit
 import SceneKit
 import ARKit
+import EFColorPicker
+import ARCL
+import CoreLocation
 
-class ViewController: UIViewController, ARSCNViewDelegate {
-
-    @IBOutlet var sceneView: ARSCNView!
+class ViewController: UIViewController, ARSCNViewDelegate,UIPopoverPresentationControllerDelegate,EFColorSelectionViewControllerDelegate {
+    @IBOutlet weak var inputText: UITextField!
+    @IBOutlet weak var sceneView: MyARView!
+    @IBOutlet weak var sendBtn: UIButton!
+    @IBOutlet weak var inputTextAndBtn: UIView!
+    @IBOutlet weak var hiddenFSBtn: UIButton!
+    @IBOutlet weak var statusView: UIView!
+    
+    var isToggleTrue:Bool = false
+    var isFSHidden:Bool = false
+    var viewAnchor:ARPlaneAnchor!
+    var focusSquare = FocusSquare()//找寻平面用的方块
+    /// 用来显示状态的文字
+    lazy var statusViewController: StatusViewController = {
+        return childViewControllers.lazy.flatMap({ $0 as? StatusViewController }).first!
+    }()
+    /// 一个串行队列用于协调从场景中添加或删除节点。
+    let updateQueue = DispatchQueue(label: "serialSceneKitQueue")
+    /// 存下添加到平面中的所有立体text
+    var textNodes = [TextNode]()
+    //地板
+    var floorNodes = [CreatObject]()
+    //屏幕的中心点
+    var screenCenter: CGPoint {
+        let bounds = sceneView.bounds
+        return CGPoint(x: bounds.midX, y: bounds.midY)
+    }
+    var session: ARSession {
+        return sceneView.session
+    }
+    //对手势操作进行懒加载
+    lazy var virtualObjectInteraction = CreatObjectInteraction(sceneView: sceneView)
+    //记录键盘尺寸
+    var keyboard = CGRect()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Set the view's delegate
-        sceneView.delegate = self
-        
-        // Show statistics such as fps and timing information
-        sceneView.showsStatistics = true
-        
-        // Create a new scene
-        let scene = SCNScene(named: "art.scnassets/ship.scn")!
-        
-        // Set the scene to the view
-        sceneView.scene = scene
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        // Create a session configuration
-        let configuration = ARWorldTrackingConfiguration()
+        aligment()//设置UI细节
+        initSomeParameters()
+        setupScene()//设置场景的一些参数
+        //设置场景的内容
+        setupCamera()
+        sceneView.scene.rootNode.addChildNode(focusSquare)
+        focusSquare.unhide()
 
-        // Run the view's session
-        sceneView.session.run(configuration)
+        //设置键盘弹出的动画
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: Notification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: Notification.Name.UIKeyboardWillHide, object: nil)
+    }
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        //改变方向后要做的第一件事.改变大小
+        inputTextAndBtn.frame = CGRect(x: inputTextAndBtn.frame.origin.x, y: inputTextAndBtn.frame.origin.y, width: size.width, height: inputTextAndBtn.frame.height)
+        inputText.frame = CGRect(x: 16, y: 6, width: size.width-105, height: 30)
+        sendBtn.frame = CGRect(x: size.width-81, y: 6, width: 73, height: 30)
+        //改变方向后要做的第二件事.改变输入框的位置
+        inputTextAndBtn.frame.origin.y = size.height-42
+        
+    }
+    func aligment(){
+        let width = self.view.frame.width
+        let height = self.view.frame.height
+        
+        inputTextAndBtn.frame = CGRect(x: 0, y: height-42, width: width, height: 42.0)
+        inputText.frame = CGRect(x: 16, y: 6, width: width-105, height: 30)
+        sendBtn.frame = CGRect(x: width-81, y: 6, width: 73, height: 30)
+        
+        if(width>height){
+            statusView.frame = CGRect(x: 431, y: 277, width: 250, height: 250)
+        }else{
+            statusView.frame = CGRect(x: 299, y: 422, width: 250, height: 250)
+        }
+        
+        isFSHidden = UserDefaults.standard.bool(forKey: "isFSHidden")
+        if isFSHidden{
+            hiddenFSBtn.setImage(UIImage(named: "方块隐藏"), for: UIControlState.normal)
+            focusSquare.isHidden = true
+        }else{
+            hiddenFSBtn.setImage(UIImage(named: "方块"), for: UIControlState.normal)
+            focusSquare.isHidden = false
+        }
+    }
+    func initSomeParameters() {
+        //初始化颜色参数，避免找不到对象
+        UserDefaults.standard.set("#DEF3FD", forKey: "defaultsColor")
+        UserDefaults.standard.set(Float(1.0), forKey: "depth")
+        UserDefaults.standard.set(10.0,forKey: "size")
+    }
+    func setupScene(){
+        let scene = SCNScene()
+        sceneView.scene = scene
+        
+        sceneView.debugOptions = []
+        sceneView.delegate = self
+        sceneView.showsStatistics = false
+        sceneView.antialiasingMode = .multisampling2X //激活抗锯齿模式
+        
+        //sceneView.autoenablesDefaultLighting = true
+        sceneView.automaticallyUpdatesLighting = false //我们自己来控制灯光
+        if sceneView.scene.lightingEnvironment.contents == nil {
+            if let environmentMap = UIImage(named: "Media.scnassets/environment_blur.exr") {
+                sceneView.scene.lightingEnvironment.contents = environmentMap
+            }
+        }
+        sceneView.scene.lightingEnvironment.intensity = 1
+        
+        let constraint = SCNLookAtConstraint(target: sceneView.scene.rootNode)
+        let light = SCNLight()
+        light.type = .directional
+        light.castsShadow = true
+        light.shadowRadius = 200
+        light.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.3)
+        light.shadowMode = .deferred
+        let lightNode = SCNNode()
+        lightNode.light = light
+        lightNode.position = SCNVector3(0.5,1,0.2)
+        lightNode.constraints = [constraint]
+        sceneView.scene.rootNode.addChildNode(lightNode)
+        
+        let light2 = SCNLight()
+        light2.type = .ambient
+        light2.intensity = 200
+        let lightNode2 = SCNNode()
+        lightNode2.light = light2
+        lightNode2.constraints = [constraint]
+        sceneView.scene.rootNode.addChildNode(lightNode2)
+    }
+    func setupCamera() {
+        guard let camera = sceneView.pointOfView?.camera else {
+            fatalError("Expected a valid `pointOfView` from the scene.")
+        }
+        //使HDR相机设置最逼真的环境照明和物理基础材料。
+        camera.wantsHDR = true
+        camera.exposureOffset = -1
+        camera.minimumExposure = -1
+        camera.maximumExposure = 3
+    }
+    @IBAction func changeState(_ sender: UIButton) {
+        if !isFSHidden{
+            sender.setImage(UIImage(named: "方块隐藏"), for: UIControlState.normal)
+            isFSHidden = true
+        }else{
+            sender.setImage(UIImage(named: "方块"), for: UIControlState.normal)
+            isFSHidden = false
+        }
+        focusSquare.isHidden = isFSHidden
+        UserDefaults.standard.set(isFSHidden, forKey: "isFSHidden")
+    }
+    @IBAction func takeSnapshot(_ sender: UIButton) {
+        let temp = sceneView.snapshot()
+        UIImageWriteToSavedPhotosAlbum(temp, self, nil, nil)
+        alert(error: "操作完成", message: "如果相册中没有图片，请检查应用权限")
+    }
+    func alert(error:String,message:String){
+        let alert = UIAlertController(title: error, message: message, preferredStyle: .alert)
+        let ok = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+        alert.addAction(ok)
+        self.present(alert, animated: true, completion: nil)
+    }
+    @objc func keyboardWillShow(_ notification:Notification){
+        let rect = (notification.userInfo![UIKeyboardFrameEndUserInfoKey]) as! NSValue
+        keyboard = rect.cgRectValue
+        
+        UIView.animate(withDuration: 0.4) {
+            self.inputTextAndBtn.frame.origin.y = self.view.frame.height - self.keyboard.height - 42
+        }
+    }
+    @objc func keyboardWillHide(_ notification:Notification){
+        UIView.animate(withDuration: 0.4) {
+            self.inputTextAndBtn.frame.origin.y = self.view.frame.height - 42
+            print("self.inputTextAndBtn.frame.origin.y:\(self.inputTextAndBtn)+isHidden:\(self.inputTextAndBtn.isHidden)")
+        }
+    }
+
+    @IBAction func setColorBtn(_ sender: UIButton) {
+        //弹出颜色选择器
+        let colorSelectionController = EFColorSelectionViewController()
+        let navCtrl = UINavigationController(rootViewController: colorSelectionController)
+        navCtrl.navigationBar.backgroundColor = UIColor.white
+        navCtrl.navigationBar.isTranslucent = false
+        navCtrl.modalPresentationStyle = UIModalPresentationStyle.popover
+        navCtrl.popoverPresentationController?.delegate = self
+        navCtrl.popoverPresentationController?.sourceView = sender
+        navCtrl.popoverPresentationController?.sourceRect = sender.bounds
+        navCtrl.preferredContentSize = colorSelectionController.view.systemLayoutSizeFitting(
+            UILayoutFittingCompressedSize
+        )
+        colorSelectionController.delegate = self
+        colorSelectionController.color = UIColor.init(hexString: UserDefaults.standard.string(forKey: "defaultsColor")!)
+        
+        if UIUserInterfaceSizeClass.compact == self.traitCollection.horizontalSizeClass {
+            let doneBtn: UIBarButtonItem = UIBarButtonItem(
+                title: NSLocalizedString("Done", comment: ""),
+                style: UIBarButtonItemStyle.done,
+                target: self,
+                action: nil
+            )
+            colorSelectionController.navigationItem.rightBarButtonItem = doneBtn
+        }
+        self.present(navCtrl, animated: true, completion: nil)
+    }
+    func colorViewController(colorViewCntroller: EFColorSelectionViewController, didChangeColor color: UIColor) {
+        UserDefaults.standard.set(color.hexString(), forKey: "defaultsColor")
+    }
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        //保持屏幕常亮
+        UIApplication.shared.isIdleTimerDisabled = true
+        
+        // 创建 session 配置（configuration）实例
+        let configuration = ARWorldTrackingConfiguration()
+        // 明确表示需要追踪水平面。设置后 scene 被检测到时就会调用 ARSCNViewDelegate 方法
+        configuration.planeDetection = .horizontal
+        // 运行 view 的 session
+        sceneView.session.run(configuration, options: [.resetTracking,.removeExistingAnchors])
     }
     
+    @IBAction func toggleHidden(_ sender: UISegmentedControl) {
+        if isToggleTrue{
+            sceneView.debugOptions = []
+            sceneView.showsStatistics = false
+            isToggleTrue = false
+        }else{
+            sceneView.debugOptions = [ARSCNDebugOptions.showWorldOrigin, ARSCNDebugOptions.showFeaturePoints]
+            sceneView.showsStatistics = true
+            isToggleTrue = true
+        }
+    }
+    @IBAction func sendBtn(_ sender: Any) {
+        var text = (inputText.text?.isEmpty)! ? "无文字":inputText.text!
+        text = text.replacingOccurrences(of: "\\n", with: "\n")
+        let fontSize:CGFloat = 10
+        let textColor = UIColor.init(hexString: UserDefaults.standard.string(forKey: "defaultsColor")!)
+        //从存储中读取
+        let fontType = UserDefaults.standard.integer(forKey: "font")
+        var fontTypeString:String
+        switch fontType {
+        case 1:
+            fontTypeString = "QFKT"
+        case 2:
+            fontTypeString = "LiSu"
+        case 3:
+            fontTypeString = "Li Xuke"
+        default:
+            fontTypeString = "PingFang SC"
+        }
+        let textFont = UIFont(name: fontTypeString, size: CGFloat(UserDefaults.standard.float(forKey: "size")))
+        let textDepth = UserDefaults.standard.float(forKey: "depth")
+        let textScn = ARText(text: text, font: textFont!, color: textColor, depth: CGFloat(textDepth)*(fontSize/10))
+        let textNode = TextNode(fsPosition: focusSquare.lastPosition!, scntext: textScn, sceneView: sceneView, scale: 1/100)
+        textNodes.append(textNode)
+        //print("添加了第\(textNodes.count)个节点")
+        self.sceneView.scene.rootNode.addChildNode(textNode)
+        
+        //添加小方块，临时
+        let size:CGFloat = 0.1
+        
+        let box = SCNBox(width: size, height: size, length: size, chamferRadius: 0.025)
+        box.firstMaterial?.lightingModel = .physicallyBased
+        box.firstMaterial?.specular.contents = UIColor.black
+        box.firstMaterial?.diffuse.contents = UIColor.gray
+        box.firstMaterial?.roughness.contents = UIImage(named: "Media.scnassets/scuffed-plastic-rough.png")
+        box.firstMaterial?.metalness.contents = UIImage(named: "Media.scnassets/scuffed-plastic-metal.png")
+        box.firstMaterial?.normal.contents = UIImage(named: "Media.scnassets/scuffed-plastic-normal.png")
+        box.firstMaterial?.ambientOcclusion.contents = UIImage(named: "Media.scnassets/scuffed-plastic-ao.png")
+        let node = SCNNode(geometry: box)
+        let position = focusSquare.lastPosition!
+
+        node.position = SCNVector3Make(position.x, position.y+Float(size/2), position.z)
+        //self.sceneView.scene.rootNode.addChildNode(node)
+        
+        
+        
+        let floor = SCNFloor()
+        floor.reflectivity = 0
+        let material = SCNMaterial()
+        material.diffuse.contents = UIColor.white
+        material.colorBufferWriteMask = SCNColorMask(rawValue: 0)
+        floor.materials = [material]
+        let floorNode:CreatObject
+        floorNode = CreatObject()
+        floorNode.geometry = floor
+        floorNode.position = SCNVector3Make(focusSquare.lastPosition!.x, focusSquare.lastPosition!.y, focusSquare.lastPosition!.z)
+        floorNodes.append(floorNode)
+        sceneView.scene.rootNode.addChildNode(floorNode)
+    }
+    func updateFocusSquare() {
+        // 除非sceen只是初始化，否则我们应该始终拥有一个有效的世界位置。
+        guard let (worldPosition, planeAnchor, _) = sceneView.worldPosition(fromScreenPosition: screenCenter, objectPosition: focusSquare.lastPosition) else {
+            updateQueue.async {
+                self.focusSquare.state = .initializing
+                self.sceneView.pointOfView?.addChildNode(self.focusSquare)
+            }
+            return
+        }
+        
+        updateQueue.async {
+            self.sceneView.scene.rootNode.addChildNode(self.focusSquare)
+            let camera = self.session.currentFrame?.camera
+            
+            if let planeAnchor = planeAnchor {
+                self.focusSquare.state = .planeDetected(anchorPosition: worldPosition, planeAnchor: planeAnchor, camera: camera)
+            } else {
+                self.focusSquare.state = .featuresDetected(anchorPosition: worldPosition, camera: camera)
+            }
+        }
+    }
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        
-        // Pause the view's session
+        // 暂停会话
         sceneView.session.pause()
     }
-    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Release any cached data, images, etc that aren't in use.
     }
-
-    // MARK: - ARSCNViewDelegate
-    
-/*
-    // Override to create and configure nodes for anchors added to the view's session.
-    func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
-        let node = SCNNode()
-     
-        return node
+    // ARSCNViewDelegate的一系列方法
+    func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
+        DispatchQueue.main.async {
+            self.virtualObjectInteraction.updateObjectToCurrentTrackingPosition()
+            self.updateFocusSquare()
+        }
     }
-*/
-    
+    func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
+        guard let anchor = anchor as? ARPlaneAnchor else {
+            return
+        }
+        self.viewAnchor = anchor
+        //UI相关放在主线程里
+        DispatchQueue.main.async {
+            self.statusViewController.cancelScheduledMessage(for: .planeEstimation)
+            self.statusViewController.showMessage("检测到平面")
+            self.inputTextAndBtn.frame.origin.y = self.view.frame.height
+            self.inputTextAndBtn.isHidden = false
+            UIView.animate(withDuration: 0.4) {
+                self.inputTextAndBtn.frame.origin.y = self.view.frame.height-42
+            }
+        }
+        //加上这个方法让平面更稳定
+        updateQueue.async {
+            for singleNode in self.textNodes{
+                singleNode.adjustOntoPlaneAnchor(anchor,using:node)
+            }
+            for singleNode in self.floorNodes{
+                singleNode.adjustOntoPlaneAnchor(anchor,using:node)
+            }
+        }
+    }
+    func renderer(_ renderer: SCNSceneRenderer, didUpdate node: SCNNode, for anchor: ARAnchor) {
+        // 查看此平面当前是否正在渲染
+        guard let anchor = anchor as? ARPlaneAnchor else {
+            return
+        }
+        //加上这个方法让平面更稳定
+        updateQueue.async {
+            for singleNode in self.textNodes{
+                singleNode.adjustOntoPlaneAnchor(anchor,using:node)
+            }
+            for singleNode in self.floorNodes{
+                singleNode.adjustOntoPlaneAnchor(anchor,using:node)
+            }
+        }
+    }
+    func renderer(_ renderer: SCNSceneRenderer, didRemove node: SCNNode, for anchor: ARAnchor) {
+    }
+    func renderer(_ renderer: SCNSceneRenderer, willUpdate node: SCNNode, for anchor: ARAnchor) {
+    }
+    func session(_ session: ARSession, cameraDidChangeTrackingState camera: ARCamera) {
+        statusViewController.showTrackingQualityInfo(for: camera.trackingState, autoHide: true)
+        
+        switch camera.trackingState {
+        case .notAvailable, .limited:
+            statusViewController.escalateFeedback(for: camera.trackingState, inSeconds: 3.0)
+        case .normal:
+            statusViewController.cancelScheduledMessage(for: .trackingStateEscalation)
+        }
+    }
     func session(_ session: ARSession, didFailWithError error: Error) {
-        // Present an error message to the user
-        
+        // 向用户显示错误消息
     }
-    
     func sessionWasInterrupted(_ session: ARSession) {
-        // Inform the user that the session has been interrupted, for example, by presenting an overlay
-        
+        // 通知用户会话已被中断，例如，通过呈现一个覆盖层
+        statusViewController.showMessage("""
+        SESSION INTERRUPTED
+        中断结束后，会话将重置。
+        """, autoHide: false)
     }
-    
     func sessionInterruptionEnded(_ session: ARSession) {
-        // Reset tracking and/or remove existing anchors if consistent tracking is required
-        
+        statusViewController.showMessage("欢迎回来")
     }
 }
